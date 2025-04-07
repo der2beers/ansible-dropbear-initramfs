@@ -1,0 +1,27 @@
+---
+- name: Install Dropbear initramfs dependencies
+  apt:
+    name:
+      - dropbear-initramfs
+    state: present
+    update_cache: yes
+
+- name: Upload SSH public key for Dropbear
+  copy:
+    dest: "{{ dropbear_initramfs.ssh_public_key_path }}"
+    content: "{{ dropbear_initramfs.ssh_public_key }}"
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: Configure Dropbear Options
+  lineinfile:
+    path: "{{ dropbear_initramfs.dropbear_config_path }}"
+    regexp: '^DROPBEAR_OPTIONS='
+    line: "DROPBEAR_OPTIONS=\"{{ dropbear_initramfs.dropbear_options }}\""
+    state: present
+
+- name: Configure initramfs
+  template:
+    src: initramfs.conf.j2
+    dest: /etc/initramfs-tools/conf.d/initramfs.conf

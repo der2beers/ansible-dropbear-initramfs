@@ -1,0 +1,43 @@
+---
+- name: Ensure required tools are installed
+  ansible.builtin.package:
+    name: ["openssh-server", "dropbear-initramfs"]
+    state: present
+
+- name: Read the OpenSSH Ed25519 host key
+  ansible.builtin.shell: |
+    ssh-keygen -y -f /etc/ssh/ssh_host_ed25519_key > /tmp/ssh_host_ed25519_key.pub
+  args:
+    creates: /tmp/ssh_host_ed25519_key.pub
+
+- name: Convert OpenSSH Ed25519 host key to Dropbear format
+  ansible.builtin.shell: |
+    dropbearconvert openssh dropbear /etc/ssh/ssh_host_ed25519_key /tmp/dropbear_ed25519_host_key
+  args:
+    creates: /tmp/dropbear_ed25519_host_key
+
+- name: Remove existing Dropbear host keys (if any)
+  ansible.builtin.file:
+    path: "{{ dropbear_initramfs.dropbear_hostkey_path }}/{{ item }}"
+    state: absent
+  loop:
+    - dropbear_rsa_host_key
+    - dropbear_ecdsa_host_key
+    - dropbear_ed25519_host_key
+
+- name: Copy the Dropbear Ed25519 host key to the target location
+  ansible.builtin.copy:
+    src: /tmp/dropbear_ed25519_host_key
+    dest: "{{ dropbear_initramfs.dropbear_hostkey_path }}/dropbear_ed25519_host_key"
+    owner: root
+    group: root
+    mode: "0600"
+    remote_src: true
+
+- name: Clean up temporary files
+  ansible.builtin.file:
+    path: "/tmp/{{ item }}"
+    state: absent
+  loop:
+    - ssh_host_ed25519_key.pub
+    - dropbear_ed25519_host_key

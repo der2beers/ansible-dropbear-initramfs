@@ -1,0 +1,8 @@
+---
+- name: Update initramfs
+  command: update-initramfs -u
+  register: update_result
+
+- name: Show initramfs update result
+  debug:
+    var: update_result.stdout

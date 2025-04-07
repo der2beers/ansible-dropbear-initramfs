@@ -1,0 +1,18 @@
+---
+- name: Ensure init-bottom directory exists
+  file:
+    path: /etc/initramfs-tools/scripts/init-bottom
+    state: directory
+    mode: '0755'
+
+- name: Deploy init-bottom script
+  template:
+    src: disable_interface.j2
+    dest: /etc/initramfs-tools/scripts/init-bottom/disable_interface
+    mode: '0755'
+
+- name: Deploy iptables rules template directly to init-top directory
+  template:
+    src: iptables_rules.sh.j2
+    dest: /etc/initramfs-tools/scripts/init-top/iptables
+    mode: '0755'

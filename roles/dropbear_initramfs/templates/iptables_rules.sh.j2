@@ -1,0 +1,28 @@
+#!/bin/sh
+
+case "$1" in
+prereqs)
+    # Keine Abhängigkeiten erforderlich
+    exit 0
+    ;;
+esac
+
+# Set iptables rules to only allow SSH traffic
+
+# Flush existing rules
+iptables -F
+iptables -X
+
+# Default policy: drop all incoming traffic
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+iptables -P OUTPUT DROP
+
+# Allow loopback traffic
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A OUTPUT -i lo -j ACCEPT
+
+iptables -A INPUT -i {{ dropbear_initramfs.initramfs_network_interface }} -d {{ dropbear_initramfs.initramfs_ip }} -p tcp --dport {{ dropbear_initramfs.initramfs_port }} -j ACCEPT
+iptables -A OUTPUT -p tcp -s {{ dropbear_initramfs.initramfs_ip }} --sport {{ dropbear_initramfs.initramfs_port }} -m state --state ESTABLISHED -j ACCEPT
+
+exit 0

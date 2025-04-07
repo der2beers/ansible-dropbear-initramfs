@@ -1,0 +1,13 @@
+---
+dropbear_initramfs:
+  ssh_public_key_path: "/etc/dropbear/initramfs/authorized_keys"
+  ssh_public_key: ""
+  dropbear_options: ""
+  dropbear_config_path: "/etc/dropbear/initramfs/dropbear.conf"
+  initramfs_network_interface: ""
+  dropbear_hostkey_path: "/etc/dropbear/initramfs"
+  initramfs_ip: ""
+  initramfs_port: ""
+  initramfs_default_gateway: ""
+  initramfs_subnetmask: ""
+  initramfs_hostname: ""

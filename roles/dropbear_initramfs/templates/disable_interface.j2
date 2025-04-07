@@ -1,0 +1,17 @@
+#!/bin/sh
+
+case "$1" in
+prereqs)
+    # Keine Abhängigkeiten erforderlich
+    exit 0
+    ;;
+esac
+
+rm -f /run/*{{ dropbear_initramfs.initramfs_network_interface }}*
+rm -f /run/netplan/*{{ dropbear_initramfs.initramfs_network_interface }}*
+ip addr flush dev {{ dropbear_initramfs.initramfs_network_interface }}
+ip -f inet address flush dev {{ dropbear_initramfs.initramfs_network_interface }}
+ip link set {{ dropbear_initramfs.initramfs_network_interface }} down
+#/run/netplan/ens3.yaml
+#/run/systemd/network/10-netplan-ens3.network
+exit 0
