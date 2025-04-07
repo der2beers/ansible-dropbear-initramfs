@@ -7,8 +7,10 @@ prereqs)
     ;;
 esac
 
-rm -f /run/*{{ dropbear_initramfs.initramfs_network_interface }}*
-rm -f /run/netplan/*{{ dropbear_initramfs.initramfs_network_interface }}*
+rm -f /run/*{{ dropbear_initramfs.initramfs_network_interface }}*.yaml
+rm -f /run/*{{ dropbear_initramfs.initramfs_network_interface }}*.yml
+rm -f /run/netplan/*{{ dropbear_initramfs.initramfs_network_interface }}*.yaml
+rm -f /run/netplan/*{{ dropbear_initramfs.initramfs_network_interface }}*.yml
 ip addr flush dev {{ dropbear_initramfs.initramfs_network_interface }}
 ip -f inet address flush dev {{ dropbear_initramfs.initramfs_network_interface }}
 ip link set {{ dropbear_initramfs.initramfs_network_interface }} down
