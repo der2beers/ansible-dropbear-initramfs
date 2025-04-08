@@ -1,12 +1,8 @@
 ---
 - hosts: all
   become: true
-
+  vars:
+    dropbear_enable_password_auth: true
 
   roles:
-    - role: dropbear_initramfs
-    
-  tasks:
-    - name: Output the ED25519 host key fingerprint
-      ansible.builtin.debug:
-        msg: "The ED25519 host key fingerprint is {{ hostkey_fingerprint_output }} pub is {{ hostkey_public_output }}"
+    - role: roles/dropbear_initramfs
