@@ -5,13 +5,14 @@
     state: directory
     mode: '0755'
 
-- name: Deploy init-bottom script
+- name: Deploy disable interface script initramfs init-bottom directory
   template:
     src: disable_interface.j2
     dest: /etc/initramfs-tools/scripts/init-bottom/disable_interface
     mode: '0755'
+  when: dropbear_initramfs.disable_networkif_on_exit
 
-- name: Deploy iptables rules template directly to init-top directory
+- name: Deploy iptables install script to init-top directory
   template:
     src: iptables_rules.sh.j2
     dest: /etc/initramfs-tools/scripts/init-top/iptables
