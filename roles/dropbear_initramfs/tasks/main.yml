@@ -1,5 +1,5 @@
 ---
 - import_tasks: dropbear-config.yml
 - import_tasks: set-dropbear-hostkey.yml
-- import_tasks: roles/dropbear_initramfs/tasks/install-initramfs-init-scripts.yml
+- import_tasks: install-initramfs-init-scripts.yml
 - import_tasks: update-initramfs.yml
