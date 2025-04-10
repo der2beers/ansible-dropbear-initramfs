@@ -5,6 +5,7 @@ dropbear_initramfs:
   dropbear_options: ""
   dropbear_config_path: "/etc/dropbear/initramfs/dropbear.conf"
   initramfs_network_interface: ""
+  disable_networkif_on_exit: false
   dropbear_hostkey_path: "/etc/dropbear/initramfs"
   initramfs_ip: ""
   initramfs_port: ""
