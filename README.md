@@ -4,26 +4,34 @@
 
 ## testet on
 
-- Ubuntu Server
 
-## Inhaltsverzeichnis
+## Content
 
 - [What the playbook does](#what-the-playbook-does)
+- [Info](#info)
 - [Usage](#usage)
 - [Konfiguration](#konfiguration)
 
 ## What the playbook does
 
-    - disables dropbear ssh password login
+    - disables dropbear SSH password login
+    - installs SSH public key for authentication
+    - uses customizable port for SSH
     - optional - takes networkinterface down before OS starts
-    - uses openSSH hostkey to generate dropbear hostkey --> keeps ssh hostidentity
+    - keeps SSH host identity unique by copying and converting openSSH hostkey to a `dropbear-initramfs` compatible format
     - static IPv4 configuration for initramfs
+
+## Info
+
+    - only use reserved IP addresses to avoid address conflicts due to DHCP
+    - os far only IPv4 is supported
+    - IP address configuration only effects initramfs and not the actual OS
+    - SSH dropbear login happens as root `ssh root@<host> -p <your custom ssh port>`
 
 ## Usage
 
-Voraussetzungen:
-- Node.js >= 18 / Python >= 3.10 / etc.
-- Abhängigkeiten, die vorab installiert werden müssen
+    1. Customize `inventories/hosts.yml`
+    2. Copy `roles/dropbear_initramfs/defaults/main.yml` to `inventories/host_vars/your-hostname.yml` and provide values for all undefined variables.
 
 ```sh
 # Run ansible containerized on your client
